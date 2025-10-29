@@ -7,6 +7,7 @@ import {
 import { validationResultHandler } from '../../middlewares/validationMiddleware.js';
 import { asyncWrapper } from '../../utils/asyncWrapper.js';
 import { loginUser } from '../../controllers/authController.js';
+import { logout } from '../../controllers/logoutController.js';
 
 export const UserRouter = express.Router();
 
@@ -23,3 +24,5 @@ UserRouter.post(
   validationResultHandler,
   asyncWrapper(loginUser)
 );
+
+UserRouter.post('/logout', logout);
