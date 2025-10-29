@@ -30,14 +30,19 @@ export const getChatMembers = async (req, res) => {
     throw error;
   }
   const userInvolvedMessages = await ChatModel.find({
-    $or: [{ senderId: myId }, { receiverId: myId }],
+    $and: [
+      {
+        $or: [{ senderId: myId }, { receiverId: myId }],
+      },
+      { type: 'room-joined' },
+    ],
   });
-  // unique users that the user has ever chatted with
+  // unique users that the user has ever chatted or joined a room with
   const usersWithChatHistory = userInvolvedMessages.reduce(
     (uniqueUserIds, message) => {
       //other user = all the users that the logged in user has ever chatted with
       const otherUserId =
-        message.senderId.toString() === myId
+        message.senderId.toString() === my
           ? message.receiverId
           : message.senderId;
       //unique user ids = only the unique ids of other users from all the chats

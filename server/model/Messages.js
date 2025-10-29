@@ -19,6 +19,11 @@ const chatSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+      enum: ['room-joined', 'normal-message'],
+      default: 'normal-message',
+    },
   },
   { timestamps: true }
 );
