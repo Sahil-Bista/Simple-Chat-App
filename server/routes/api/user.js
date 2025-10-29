@@ -19,7 +19,7 @@ UserRouter.post(
 );
 
 UserRouter.post(
-  '/register',
+  '/login',
   loginValidator,
   validationResultHandler,
   asyncWrapper(loginUser)
