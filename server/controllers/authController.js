@@ -26,18 +26,18 @@ export const loginUser = async (req, res) => {
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expires_in: '15m',
+      expiresIn: '15m',
     }
   );
   const refreshToken = jwt.sign(
     {
-      user: user._id,
+      user: foundUser._id,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: '15d' }
   );
-  user.refresh_token = refreshToken;
-  user.save();
+  foundUser.refresh_token = refreshToken;
+  foundUser.save();
   res.cookie('jwt', refreshToken, {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
