@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const UserRegistrationForm = () => {
@@ -9,7 +10,7 @@ const UserRegistrationForm = () => {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
 
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     try {
@@ -26,9 +27,9 @@ const UserRegistrationForm = () => {
       );
       const data = response.data;
       console.log(data);
-      //   if (response.status === 200) {
-      //     navigate('/login');
-      //   }
+      if (response.status === 200) {
+        navigate('/login');
+      }
     } catch (err) {
       console.log(err);
     }
@@ -105,8 +106,6 @@ const UserRegistrationForm = () => {
             Admin
           </label>
         </div>
-
-        <p>Selected role: {role}</p>
       </div>
       <button>Submit</button>
     </form>
