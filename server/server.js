@@ -1,5 +1,23 @@
 import app from './app.js';
 import { connectDB } from './config/dbConn.js';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+
+const httpServer = createServer(app);
+
+export const io = new Server(httpServer, {
+  cors: {
+    origin: '*',
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected from socket server');
+  });
+});
 
 let server;
 
