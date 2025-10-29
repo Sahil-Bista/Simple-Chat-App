@@ -2,6 +2,7 @@ import app from './app.js';
 import { connectDB } from './config/dbConn.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import mongoose from 'mongoose';
 
 const httpServer = createServer(app);
 
