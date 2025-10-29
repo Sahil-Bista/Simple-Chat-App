@@ -27,14 +27,12 @@ export const registerValidator = [
 
   body('roles')
     .optional()
-    .isArray()
-    .withMessage('Roles must be an array')
+    .notEmpty()
+    .withMessage('Role is required')
     .custom((roles) => {
       const allowedRoles = ['User', 'Admin'];
-      for (const role of roles) {
-        if (!allowedRoles.includes(role)) {
-          throw new Error('Invalid role');
-        }
+      if (!allowedRoles.includes(roles)) {
+        throw new Error('Invalid role');
       }
       return true;
     }),
