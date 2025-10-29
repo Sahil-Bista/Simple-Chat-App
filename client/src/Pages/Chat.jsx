@@ -6,19 +6,19 @@ const Chat = () => {
   const [chatMembers, setChatMembers] = useState([]);
 
   useEffect(() => {
-    try {
-      const response = axios.post(
-        'http://locahost:3000/api/chat',
-        {},
-        { withCredentials: true }
-      );
-      const data = response.data;
-      console.log(data);
-      setChatMembers(data);
-    } catch (err) {
-      console.log(err);
-    }
-  }, [chatMembers]);
+    const fetchChats = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/chat');
+        console.log('Hello');
+        const data = response.data;
+        console.log(data);
+        setChatMembers(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchChats();
+  }, []);
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div>
