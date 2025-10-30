@@ -2,9 +2,13 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 export const Users = () => {
   const [users, SetUsers] = useState([]);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -36,7 +40,15 @@ export const Users = () => {
     <div>
       {users.map((user) => (
         <ul>
-          <li key={user._id}>{user.firstName}</li>
+          <li key={user._id}>
+            <button
+              onClick={() => {
+                navigate(`/chat/${user._id}`);
+              }}
+            >
+              {user.firstName}
+            </button>
+          </li>
         </ul>
       ))}
     </div>
