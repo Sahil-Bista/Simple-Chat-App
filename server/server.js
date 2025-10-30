@@ -19,7 +19,7 @@ export const io = new Server(httpServer, {
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  socket.on('join-room', async (room, otherUserId, myUserId) => {
+  socket.on('join-room', async (room, otherUserId, myUserId, callback) => {
     if (
       !otherUserId ||
       otherUserId === 'undefined' ||
@@ -48,8 +48,10 @@ io.on('connection', (socket) => {
           type: 'room-joined',
         });
       }
+      callback(true);
     } catch (err) {
       console.log('Errr joining room', err);
+      callback(false);
     }
   });
 
