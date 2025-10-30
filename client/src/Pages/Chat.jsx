@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ChatForm from '../components/ChatForm';
 import { jwtDecode } from 'jwt-decode';
 import { socket } from '../utils/socket.js';
+import ChatMembers from '../components/ChatMembers.jsx';
+import Messages from '../components/Messages.jsx';
 
 const Chat = () => {
   const [chatMembers, setChatMembers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [myUserId, setMyUserId] = useState('');
-  const navigate = useNavigate();
 
   const messageHandler = (message) => {
     setMessages((prevMessages) => [...prevMessages, message]);
@@ -89,24 +90,10 @@ const Chat = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div style={{ flex: 1 }}>
-        {chatMembers.length > 0
-          ? chatMembers.map((member) => (
-              <ul key={member._id}>
-                <button onClick={() => navigate(`/chat/${member._id}`)}>
-                  {member.firstName}
-                </button>
-              </ul>
-            ))
-          : 'No chats made yet'}
+        <ChatMembers chatMembers={chatMembers} />
       </div>
       <div style={{ flex: 1 }}>
-        {messages.length > 0
-          ? messages.map((message) => (
-              <ul key={message._id}>
-                <li>{message.message}</li>
-              </ul>
-            ))
-          : 'No chats made yet'}
+        <Messages messages={messages} />
         <ChatForm
           receiverId={userId}
           senderId={myUserId}

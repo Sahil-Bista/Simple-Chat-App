@@ -1,8 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { socket } from '../utils/socket';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { messageValidation } from '../Validation/MessageValidation.js';
 
 const ChatForm = ({ receiverId, senderId, messageHandler }) => {
-  const { handleSubmit, register, reset } = useForm();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(messageValidation) });
 
   const roomId = [receiverId, senderId].sort().join('');
 
@@ -27,6 +34,7 @@ const ChatForm = ({ receiverId, senderId, messageHandler }) => {
           placeholder="enter your message here"
           {...register('message')}
         ></input>
+        <p>{errors?.message.message}</p>
         <button>Send</button>
       </div>
     </form>
