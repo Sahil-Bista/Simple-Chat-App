@@ -4,7 +4,7 @@ import { validationResultHandler } from '../../middlewares/validationMiddleware.
 import {
   getChatMembers,
   receiveUserChatMessages,
-} from '../../controllers/chatController';
+} from '../../controllers/chatController.js';
 
 export const chatRouter = express.Router();
 
