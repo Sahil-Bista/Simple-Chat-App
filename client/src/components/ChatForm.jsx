@@ -34,7 +34,7 @@ const ChatForm = ({ receiverId, senderId, messageHandler }) => {
           placeholder="enter your message here"
           {...register('message')}
         ></input>
-        <p>{errors?.message.message}</p>
+        <p>{errors.message?.message}</p>
         <button>Send</button>
       </div>
     </form>

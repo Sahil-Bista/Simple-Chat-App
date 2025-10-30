@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 import { socket } from '../utils/socket.js';
 import ChatMembers from '../components/ChatMembers.jsx';
 import Messages from '../components/Messages.jsx';
+import Header from '../components/Header.jsx';
 
 const Chat = () => {
   const [chatMembers, setChatMembers] = useState([]);
@@ -89,6 +90,7 @@ const Chat = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <Header />
       <div style={{ flex: 1 }}>
         <ChatMembers chatMembers={chatMembers} />
       </div>

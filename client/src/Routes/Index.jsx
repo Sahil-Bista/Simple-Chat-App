@@ -5,8 +5,8 @@ import Users from '../Pages/Users.jsx';
 import Chat from '../Pages/Chat.jsx';
 
 export const router = createBrowserRouter([
-  { path: '/register', element: <Signup /> },
+  { path: '/', element: <Signup /> },
   { path: '/login', element: <Login /> },
-  { path: '/', element: <Users /> },
+  { path: '/users', element: <Users /> },
   { path: '/chat/:userId', element: <Chat /> },
 ]);

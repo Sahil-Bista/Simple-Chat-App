@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { socket } from '../utils/socket.js';
+import Header from '../components/Header.jsx';
 
 export const Users = () => {
   const [users, SetUsers] = useState([]);
@@ -49,6 +50,7 @@ export const Users = () => {
 
   return (
     <div>
+      <Header />
       <ul>
         {users.map((user) => (
           <li key={user._id}>

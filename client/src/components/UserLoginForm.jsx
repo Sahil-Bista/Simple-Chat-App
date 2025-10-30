@@ -26,7 +26,7 @@ const UserLoginForm = () => {
       const result = response.data;
       if (response.status === 200) {
         localStorage.setItem('accessToken', result.accessToken);
-        navigate('/');
+        navigate('/users');
       }
     } catch (err) {
       if (err.response?.data?.message) {

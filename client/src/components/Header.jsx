@@ -9,9 +9,12 @@ const Header = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://locahost:3001/api/user/logout');
-      if (response.status === 201) {
-        navigate('/');
+      const response = await axios.post(
+        'http://localhost:3000/api/user/logout'
+      );
+      console.log(response, 'hi');
+      if (response.status === 204) {
+        navigate('/login');
       }
     } catch (err) {
       if (err.response?.data?.message) {
@@ -23,8 +26,8 @@ const Header = () => {
   };
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <Link to="/">Users</Link>
-      <button onSubmit={handleSubmit}>Logout</button>
+      <Link to="/users">Users</Link>
+      <button onClick={handleSubmit}>Logout</button>
     </div>
   );
 };
