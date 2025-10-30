@@ -3,13 +3,15 @@ import app from './app.js';
 import { connectDB } from './config/dbConn.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import mongoose from 'mongoose';
+import { ChatModel } from './model/Messages.js';
 
 const httpServer = createServer(app);
 
 export const io = new Server(httpServer, {
   cors: {
-    origin: '*',
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+    credentials: true,
   },
 });
 
@@ -60,7 +62,7 @@ let server;
 export const startServer = async (PORT) => {
   try {
     await connectDB();
-    server = app.listen(PORT, () => {
+    server = httpServer.listen(PORT, () => {
       console.log(`App is listening on PORT ,${PORT}`);
     });
   } catch (err) {
