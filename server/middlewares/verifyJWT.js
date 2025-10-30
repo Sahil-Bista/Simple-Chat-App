@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const verifyJWT = (req, res, next) => {
-  const authorization = req.headers.auhtorization || req.headers.Authorization;
+  const authorization = req.headers.authorization || req.headers.Authorization;
   if (!authorization?.startsWith('Bearer '))
     return res.status(401).json({ msg: 'Invalid token' });
   const token = authorization.split(' ')[1];

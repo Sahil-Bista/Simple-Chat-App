@@ -8,6 +8,9 @@ import { validationResultHandler } from '../../middlewares/validationMiddleware.
 import { asyncWrapper } from '../../utils/asyncWrapper.js';
 import { loginUser } from '../../controllers/authController.js';
 import { logout } from '../../controllers/logoutController.js';
+import { getUsers } from '../../controllers/userController.js';
+import { verifyJWT } from '../../middlewares/verifyJWT.js';
+import { verifyRoles } from '../../middlewares/verifyRoles.js';
 
 export const UserRouter = express.Router();
 
@@ -23,6 +26,13 @@ UserRouter.post(
   loginValidator,
   validationResultHandler,
   asyncWrapper(loginUser)
+);
+
+UserRouter.get(
+  '/',
+  verifyJWT,
+  verifyRoles('User', 'Admin'),
+  asyncWrapper(getUsers)
 );
 
 UserRouter.post('/logout', logout);
