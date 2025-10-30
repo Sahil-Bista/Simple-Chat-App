@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import ChatForm from '../components/ChatForm';
 import { jwtDecode } from 'jwt-decode';
+import { socket } from '../utils/socket.js';
 
 const Chat = () => {
   const [chatMembers, setChatMembers] = useState([]);
@@ -11,7 +12,13 @@ const Chat = () => {
   const [myUserId, setMyUserId] = useState('');
   const navigate = useNavigate();
 
+  const messageHandler = (message) => {
+    setMessages((prevMessages) => [...prevMessages, message]);
+  };
+
   const { userId } = useParams();
+
+  const token = localStorage.getItem('accessToken');
 
   useEffect(() => {
     if (token) {
@@ -19,8 +26,6 @@ const Chat = () => {
       setMyUserId(decoded.UserInfo.user);
     }
   }, [token]);
-
-  const token = localStorage.getItem('accessToken');
 
   useEffect(() => {
     const fetchChatMembers = async () => {
@@ -34,7 +39,7 @@ const Chat = () => {
           },
           { withCredentials: true }
         );
-        console.log(response.data.data);
+        console.log('chat members', response.data.data);
         setChatMembers(response.data.data);
       } catch (err) {
         console.log(err);
@@ -63,6 +68,24 @@ const Chat = () => {
       .catch((err) => console.log(err));
   }, [userId, token]);
 
+  useEffect(() => {
+    const handleReceiveMessages = (message) => {
+      console.log('received message', message);
+      messageHandler({
+        senderId: userId,
+        receiverId: myUserId,
+        message,
+        createdAt: new Date(),
+      });
+    };
+    socket.on('receiveMessage', handleReceiveMessages);
+
+    //we need to pass the reference of the funciton to let the system know which listener to remove
+    return () => {
+      socket.off('receiveMessage', handleReceiveMessages);
+    };
+  }, [myUserId, userId]);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div style={{ flex: 1 }}>
@@ -84,7 +107,11 @@ const Chat = () => {
               </ul>
             ))
           : 'No chats made yet'}
-        <ChatForm receiverId={userId} senderId={myUserId} />
+        <ChatForm
+          receiverId={userId}
+          senderId={myUserId}
+          messageHandler={messageHandler}
+        />
       </div>
     </div>
   );
