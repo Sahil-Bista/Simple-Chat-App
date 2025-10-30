@@ -1,5 +1,6 @@
 import { ChatModel } from '../model/Messages.js';
 import { UserModel } from '../model/User.js';
+import { Types } from 'mongoose';
 
 export const receiveUserChatMessages = async (req, res) => {
   const { userId } = req.params;
@@ -14,7 +15,7 @@ export const receiveUserChatMessages = async (req, res) => {
       $in: [new Types.ObjectId(userId), new Types.ObjectId(myId)],
     },
     senderId: {
-      $in: [new Types.ObjectId(userId), new Types.Object(myId)],
+      $in: [new Types.ObjectId(userId), new Types.ObjectId(myId)],
     },
   });
   return res
