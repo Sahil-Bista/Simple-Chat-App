@@ -63,7 +63,14 @@ export const Users = () => {
                   myUserId,
                   (success) => {
                     if (success) {
+                      console.log(
+                        `Joined room from users: ${[myUserId, user._id]
+                          .sort()
+                          .join('')}`
+                      );
                       navigate(`/chat/${user._id}`);
+                    } else {
+                      console.error('Failed to join room');
                     }
                   }
                 );

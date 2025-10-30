@@ -95,7 +95,7 @@ export const UserRegistrationForm = () => {
         </div>
       </div>
       <p>
-        Already registered? <Link to="/">Log In</Link>
+        Already registered? <Link to="/login">Log In</Link>
       </p>
       <button>Submit</button>
     </form>

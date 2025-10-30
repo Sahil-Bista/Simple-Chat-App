@@ -1,14 +1,16 @@
 const Messages = ({ messages }) => {
   return (
-    <>
-      {messages.length > 0
-        ? messages.map((message) => (
-            <ul key={message._id}>
-              <li>{message.message}</li>
-            </ul>
-          ))
-        : 'No chats made yet'}
-    </>
+    <div style={{ overflowY: 'scroll', flex: 1 }}>
+      {messages.length > 0 ? (
+        messages.map((message, index) => (
+          <li key={message._id || index}>
+            <p>{message.message}</p>
+          </li>
+        ))
+      ) : (
+        <p>No chats made yet</p>
+      )}
+    </div>
   );
 };
 

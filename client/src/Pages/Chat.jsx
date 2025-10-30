@@ -41,14 +41,13 @@ const Chat = () => {
           },
           { withCredentials: true }
         );
-        console.log('chat members', response.data.data);
         setChatMembers(response.data.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchChatMembers();
-  }, [token]);
+  }, [myUserId, token]);
 
   useEffect(() => {
     axios
@@ -64,7 +63,6 @@ const Chat = () => {
         }
       )
       .then((result) => {
-        console.log('lol', result.data.data);
         setMessages(result.data.data);
       })
       .catch((err) => console.log(err));
@@ -92,7 +90,7 @@ const Chat = () => {
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <Header />
       <div style={{ flex: 1 }}>
-        <ChatMembers chatMembers={chatMembers} />
+        <ChatMembers myUserId={myUserId} chatMembers={chatMembers} />
       </div>
       <div style={{ flex: 1 }}>
         <Messages messages={messages} />
