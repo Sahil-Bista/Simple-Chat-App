@@ -1,9 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { LoginValidation } from '../Validation/LoginValidationSchema.js';
 
 const UserLoginForm = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(LoginValidation) });
 
   const navigate = useNavigate();
 
@@ -32,6 +38,7 @@ const UserLoginForm = () => {
           placeholder="Enter your email here"
           {...register('email')}
         ></input>
+        <p>{errors.email?.message}</p>
       </div>
       <div>
         <label>Password</label>
@@ -40,6 +47,7 @@ const UserLoginForm = () => {
           placeholder="Enter your password here"
           {...register('password')}
         ></input>
+        <p>{errors.password?.message}</p>
       </div>
       <button>Submit</button>
     </form>

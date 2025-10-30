@@ -1,11 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { registrationSchema } from '../Validation/RegiistrationSchemaValidation.js';
 
 export const UserRegistrationForm = () => {
   const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    //populates formState.errors when osomething fails
+    resolver: yupResolver(registrationSchema),
+  });
 
   const onSubmit = async (data) => {
     try {
@@ -33,6 +42,7 @@ export const UserRegistrationForm = () => {
           type="text"
           placeholder="Enter your first name here"
         ></input>
+        <p>{errors.firstName?.message}</p>
       </div>
       <div>
         <label>Last Name</label>
@@ -41,6 +51,7 @@ export const UserRegistrationForm = () => {
           placeholder="Enter your last name here"
           {...register('lastName')}
         ></input>
+        <p>{errors.lastName?.message}</p>
       </div>
       <div>
         <label>Email</label>
@@ -49,6 +60,7 @@ export const UserRegistrationForm = () => {
           placeholder="Enter your email here"
           {...register('email')}
         ></input>
+        <p>{errors.email?.message}</p>
       </div>
       <div>
         <label>Password</label>
@@ -57,6 +69,7 @@ export const UserRegistrationForm = () => {
           placeholder="Enter your password here"
           {...register('password')}
         ></input>
+        <p>{errors.password?.message}</p>
       </div>
       <div>
         <label>Select Role:</label>
@@ -65,12 +78,14 @@ export const UserRegistrationForm = () => {
             <input type="radio" value="User" {...register('roles')} />
             User
           </label>
+          <p>{errors.roles?.message}</p>
         </div>
         <div>
           <label>
             <input type="radio" value="Admin" {...register('roles')} />
             Admin
           </label>
+          <p>{errors.roles?.message}</p>
         </div>
       </div>
       <button>Submit</button>
