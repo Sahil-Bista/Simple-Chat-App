@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
 import { ChatModel } from '../model/Messages.js';
+import { UserModel } from '../model/User.js';
 
 export const receiveUserChatMessages = async (req, res) => {
   const { userId } = req.params;
@@ -42,7 +42,7 @@ export const getChatMembers = async (req, res) => {
     (uniqueUserIds, message) => {
       //other user = all the users that the logged in user has ever chatted with
       const otherUserId =
-        message.senderId.toString() === my
+        message.senderId.toString() === myId
           ? message.receiverId
           : message.senderId;
       //unique user ids = only the unique ids of other users from all the chats
