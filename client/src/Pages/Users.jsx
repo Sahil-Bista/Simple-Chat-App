@@ -3,11 +3,22 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { socket } from '../utils/socket.js';
 
 export const Users = () => {
   const [users, SetUsers] = useState([]);
+  const [myUserId, setMyUserId] = useState('');
+  const token = localStorage.getItem('accessToken');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      setMyUserId(decoded.UserInfo.user);
+    }
+  }, [token]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -38,19 +49,25 @@ export const Users = () => {
 
   return (
     <div>
-      {users.map((user) => (
-        <ul>
+      <ul>
+        {users.map((user) => (
           <li key={user._id}>
             <button
               onClick={() => {
+                socket.emit(
+                  'join-room',
+                  [myUserId, user._id].sort().join(''),
+                  user._id,
+                  myUserId
+                );
                 navigate(`/chat/${user._id}`);
               }}
             >
               {user.firstName}
             </button>
           </li>
-        </ul>
-      ))}
+        ))}
+      </ul>
     </div>
   );
 };

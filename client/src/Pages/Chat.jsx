@@ -1,25 +1,10 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import io from 'socket.io-client';
-import { jwtDecode } from 'jwt-decode';
-import { useParams } from 'react-router-dom';
-
-const socket = io('http://localhost:3000', { withCredentials: true });
 
 const Chat = () => {
   const [chatMembers, setChatMembers] = useState([]);
-  const [myUserId, setMyUserId] = useState('');
-  const [messages, setMessages] = useState([]);
-  const token = localStorage.getItem('accessToken');
-  const { userId: otherUserId } = useParams();
-
-  useEffect(() => {
-    if (token) {
-      const decoded = jwtDecode(token);
-      setMyUserId(decoded.UserInfo.user);
-    }
-  }, [token]);
+  // const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -34,6 +19,7 @@ const Chat = () => {
           },
           { withCredentials: true }
         );
+        console.log(response.data.data);
         setChatMembers(response.data.data);
       } catch (err) {
         console.log(err);
@@ -42,22 +28,17 @@ const Chat = () => {
     fetchChats();
   }, []);
 
-  useEffect(() => {
-    if (!myUserId || !otherUserId) return;
+  // useEffect(() => {
+  //   const messageHandler = (message) => {
+  //     setMessages((prev) => [...prev, message]);
+  //   };
 
-    const roomId = [myUserId, otherUserId].sort().join('');
+  //   socket.on('message', messageHandler);
 
-    const messageHandler = (message) => {
-      setMessages((prev) => [...prev, message]);
-    };
-
-    socket.emit('join-room', roomId, otherUserId, myUserId);
-    socket.on('message', messageHandler);
-
-    return () => {
-      socket.off('message', messageHandler);
-    };
-  }, [myUserId, otherUserId]);
+  //   return () => {
+  //     socket.off('message', messageHandler);
+  //   };
+  // }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -70,11 +51,11 @@ const Chat = () => {
             ))
           : 'No chats made yet'}
       </div>
-      <div>
+      {/* <div>
         {messages.length > 0
           ? messages.map((msg, i) => <p key={i}>{msg.message}</p>)
           : 'No messages yet'}
-      </div>
+      </div> */}
     </div>
   );
 };
