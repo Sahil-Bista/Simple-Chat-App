@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { socket } from '../utils/socket';
 
 const ChatForm = ({ receiverId, senderId, messageHandler }) => {
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, reset } = useForm();
 
   const roomId = [receiverId, senderId].sort().join('');
 
@@ -15,6 +15,7 @@ const ChatForm = ({ receiverId, senderId, messageHandler }) => {
       message,
       createdAt: new Date(),
     });
+    reset();
   };
 
   return (
