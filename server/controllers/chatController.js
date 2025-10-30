@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { ChatModel } from '../model/Messages.js';
+import { UserModel } from '../model/User.js';
 
 export const receiveUserChatMessages = async (req, res) => {
   const { userId } = req.params;
