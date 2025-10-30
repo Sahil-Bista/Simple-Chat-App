@@ -58,9 +58,13 @@ export const Users = () => {
                   'join-room',
                   [myUserId, user._id].sort().join(''),
                   user._id,
-                  myUserId
+                  myUserId,
+                  (success) => {
+                    if (success) {
+                      navigate(`/chat/${user._id}`);
+                    }
+                  }
                 );
-                navigate(`/chat/${user._id}`);
               }}
             >
               {user.firstName}
