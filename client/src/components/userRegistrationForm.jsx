@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from '../Validation/RegiistrationSchemaValidation.js';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const UserRegistrationForm = () => {
   const navigate = useNavigate();
@@ -29,7 +31,11 @@ export const UserRegistrationForm = () => {
         navigate('/login');
       }
     } catch (err) {
-      console.log(err);
+      if (err.response?.data?.message) {
+        toast.error(err.response.data.message, { autoClose: 5000 });
+      } else {
+        toast.error('An unexpected error occurred.PLease try again');
+      }
     }
   };
   return (

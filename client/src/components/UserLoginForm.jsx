@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginValidation } from '../Validation/LoginValidationSchema.js';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserLoginForm = () => {
   const {
@@ -22,13 +24,16 @@ const UserLoginForm = () => {
       );
 
       const result = response.data;
-      console.log(result);
       if (response.status === 200) {
         localStorage.setItem('accessToken', result.accessToken);
         navigate('/chat');
       }
     } catch (err) {
-      console.log(err);
+      if (err.response?.data?.message) {
+        toast.error(err.response.data.message, { autoClose: 5000 });
+      } else {
+        toast.error('An unexpected error occurred.PLease try again');
+      }
     }
   };
   return (
