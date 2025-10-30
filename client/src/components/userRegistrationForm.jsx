@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -94,6 +94,9 @@ export const UserRegistrationForm = () => {
           <p>{errors.roles?.message}</p>
         </div>
       </div>
+      <p>
+        Already registered? <Link to="/">Log In</Link>
+      </p>
       <button>Submit</button>
     </form>
   );
