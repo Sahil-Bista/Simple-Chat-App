@@ -11,7 +11,7 @@ export const logout = async (req, res) => {
     res.clearCookie('jwt', { httpOnly: true });
     res.sendStatus(204);
   }
-  foundUser.refreshToken(' ');
+  foundUser.refreshToken = ' ';
   foundUser.save();
   res.clearCookie('jwt', { httpOnly: true });
   return res.sendStatus(204);
