@@ -1,4 +1,5 @@
 import { UserModel } from '../model/User';
+import jwt from 'jsonwebtoken';
 
 export const refreshTokenController = async (req, res) => {
   const cookie = req.cookie;
