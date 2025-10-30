@@ -1,33 +1,21 @@
-import React from 'react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
 
 export const UserRegistrationForm = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
-
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = async (data) => {
     try {
       const response = await axios.post(
         'http://localhost:3000/api/user/register',
-        {
-          email,
-          password,
-          firstName,
-          lastName,
-          roles: role,
-        },
+        data,
         { withCredentials: true }
       );
-      const data = response.data;
-      console.log(data);
+      const result = response.data;
+      console.log(result);
       if (response.status === 200) {
         navigate('/login');
       }
@@ -36,16 +24,14 @@ export const UserRegistrationForm = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label>First Name</label>
         <input
+          //automatically attached onChange, onBlur, ref
+          {...register('firstName')}
           type="text"
           placeholder="Enter your first name here"
-          value={firstName}
-          onChange={(e) => {
-            setFirstName(e.target.value);
-          }}
         ></input>
       </div>
       <div>
@@ -53,10 +39,7 @@ export const UserRegistrationForm = () => {
         <input
           type="text"
           placeholder="Enter your last name here"
-          value={lastName}
-          onChange={(e) => {
-            setLastName(e.target.value);
-          }}
+          {...register('lastName')}
         ></input>
       </div>
       <div>
@@ -64,10 +47,7 @@ export const UserRegistrationForm = () => {
         <input
           type="text"
           placeholder="Enter your email here"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
+          {...register('email')}
         ></input>
       </div>
       <div>
@@ -75,35 +55,20 @@ export const UserRegistrationForm = () => {
         <input
           type="text"
           placeholder="Enter your password here"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
+          {...register('password')}
         ></input>
       </div>
       <div>
         <label>Select Role:</label>
         <div>
           <label>
-            <input
-              type="radio"
-              name="role"
-              value="User"
-              checked={role === 'User'}
-              onChange={(e) => setRole(e.target.value)}
-            />
+            <input type="radio" value="User" {...register('roles')} />
             User
           </label>
         </div>
         <div>
           <label>
-            <input
-              type="radio"
-              name="role"
-              value="Admin"
-              checked={role === 'Admin'}
-              onChange={(e) => setRole(e.target.value)}
-            />
+            <input type="radio" value="Admin" {...register('roles')} />
             Admin
           </label>
         </div>

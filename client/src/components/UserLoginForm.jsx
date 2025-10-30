@@ -1,27 +1,21 @@
-import React from 'react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
 
 const UserLoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { register, handleSubmit } = useForm();
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     try {
       const response = await axios.post(
         'http://localhost:3000/api/user/login',
-        {
-          email,
-          password,
-        },
+        data,
         { withCredentials: true }
       );
-      const data = response.data;
-      console.log(data);
+      const result = response.data;
+      console.log(result);
       if (response.status === 200) {
         navigate('/chat');
       }
@@ -30,16 +24,13 @@ const UserLoginForm = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label>Email</label>
         <input
           type="text"
           placeholder="Enter your email here"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
+          {...register('email')}
         ></input>
       </div>
       <div>
@@ -47,10 +38,7 @@ const UserLoginForm = () => {
         <input
           type="text"
           placeholder="Enter your password here"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
+          {...register('password')}
         ></input>
       </div>
       <button>Submit</button>
