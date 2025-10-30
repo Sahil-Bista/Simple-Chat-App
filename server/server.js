@@ -57,9 +57,9 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', async (senderId, receiverId, message, roomId) => {
     console.log(
-      `Message ${message} set by sender ${senderId} to recevier ${receiverId} to room ${roomId}`
+      `Message ${message} sent by sender ${senderId} to recevier ${receiverId} to room ${roomId}`
     );
-    socket.to(room).emit('sendMessage', message);
+    socket.to(roomId).emit('receiveMessage', message);
     await ChatModel.create({
       senderId: new Types.ObjectId(senderId),
       receiverId: new Types.ObjectId(receiverId),
@@ -67,6 +67,7 @@ io.on('connection', (socket) => {
       message: message,
     });
   });
+
   socket.on('disconnect', () => {
     console.log('User disconnected from socket server');
   });
