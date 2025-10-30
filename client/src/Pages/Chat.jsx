@@ -2,36 +2,39 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useParams } from 'react-router-dom';
 
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:3000', { withCredentials: true });
 
 const Chat = () => {
   const [chatMembers, setChatMembers] = useState([]);
   const [myUserId, setMyUserId] = useState('');
   const [messages, setMessages] = useState([]);
   const token = localStorage.getItem('accessToken');
-  const otherUserId = useParams();
-  if (token) {
-    const decoded = jwtDecode(token);
-    setMyUserId(decoded.UserInfo.user);
-  }
+  const { userId: otherUserId } = useParams();
 
-  const roomId = [myUserId, otherUserId].sort().join('');
-
-  const messageHandler = (message) => {
-    setMessages((prevMessages) => [...setMessages, message]);
-  };
+  useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      setMyUserId(decoded.UserInfo.user);
+    }
+  }, [token]);
 
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/chat');
-        console.log('Hello');
-        const data = response.data;
-        console.log(data);
-        setChatMembers(data);
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(
+          'http://localhost:3000/api/chat',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+          { withCredentials: true }
+        );
+        setChatMembers(response.data.data);
       } catch (err) {
         console.log(err);
       }
@@ -40,29 +43,38 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    socket.emit('room-join', roomId, otherUserId, myUserId);
+    if (!myUserId || !otherUserId) return;
 
-    socket.on('message', (message) => {
-      console.log('message recevied', message);
-      messageHandler({
-        senderId: otherUserId,
-        receiverId: myUserId,
-        message,
-        createdAt: new Date(),
-      });
-    });
-  }, [myUserId, otherUserId, roomId]);
+    const roomId = [myUserId, otherUserId].sort().join('');
+
+    const messageHandler = (message) => {
+      setMessages((prev) => [...prev, message]);
+    };
+
+    socket.emit('join-room', roomId, otherUserId, myUserId);
+    socket.on('message', messageHandler);
+
+    return () => {
+      socket.off('message', messageHandler);
+    };
+  }, [myUserId, otherUserId]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div>
-        {chatMembers.map((members) => {
-          <ul>
-            <li>{members}</li>
-          </ul>;
-        })}
+        {chatMembers.length > 0
+          ? chatMembers.map((member, i) => (
+              <ul key={i}>
+                <li>{member.firstName}</li>
+              </ul>
+            ))
+          : 'No chats made yet'}
       </div>
-      <div>{messages && { messages }}</div>
+      <div>
+        {messages.length > 0
+          ? messages.map((msg, i) => <p key={i}>{msg.message}</p>)
+          : 'No messages yet'}
+      </div>
     </div>
   );
 };
