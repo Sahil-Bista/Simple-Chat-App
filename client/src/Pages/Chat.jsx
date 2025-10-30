@@ -2,13 +2,23 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import ChatForm from '../components/ChatForm';
+import { jwtDecode } from 'jwt-decode';
 
 const Chat = () => {
   const [chatMembers, setChatMembers] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [myUserId, setMyUserId] = useState('');
   const navigate = useNavigate();
 
   const { userId } = useParams();
+
+  useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      setMyUserId(decoded.UserInfo.user);
+    }
+  }, [token]);
 
   const token = localStorage.getItem('accessToken');
 
@@ -34,8 +44,6 @@ const Chat = () => {
   }, [token]);
 
   useEffect(() => {
-    console.log('sup man');
-    console.log(userId);
     axios
       .get(
         `http://localhost:3000/api/chat/${userId}`,
@@ -56,8 +64,8 @@ const Chat = () => {
   }, [userId, token]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div>
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div style={{ flex: 1 }}>
         {chatMembers.length > 0
           ? chatMembers.map((member) => (
               <ul key={member._id}>
@@ -68,7 +76,7 @@ const Chat = () => {
             ))
           : 'No chats made yet'}
       </div>
-      <div>
+      <div style={{ flex: 1 }}>
         {messages.length > 0
           ? messages.map((message) => (
               <ul key={message._id}>
@@ -76,6 +84,7 @@ const Chat = () => {
               </ul>
             ))
           : 'No chats made yet'}
+        <ChatForm receiverId={userId} senderId={myUserId} />
       </div>
     </div>
   );
