@@ -20,9 +20,11 @@ const UserLoginForm = () => {
         data,
         { withCredentials: true }
       );
+
       const result = response.data;
       console.log(result);
       if (response.status === 200) {
+        localStorage.setItem('accessToken', result.accessToken);
         navigate('/chat');
       }
     } catch (err) {
