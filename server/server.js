@@ -4,6 +4,7 @@ import { connectDB } from './config/dbConn.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { ChatModel } from './model/Messages.js';
+import mongoose from 'mongoose';
 
 const httpServer = createServer(app);
 
@@ -44,7 +45,7 @@ io.on('connection', (socket) => {
           receiverId: new Types.ObjectId(myUserId),
           roomId: room,
           message: `You have matched with user: ${otherUserId}`,
-          type: 'Room-joined message',
+          type: 'room-joined',
         });
       }
     } catch (err) {
