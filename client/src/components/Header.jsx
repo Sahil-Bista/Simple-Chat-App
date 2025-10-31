@@ -25,10 +25,31 @@ const Header = () => {
     }
   };
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <Link to="/users">Users</Link>
-      <button onClick={handleSubmit}>Logout</button>
-    </div>
+    <header className="flex items-center justify-between bg-white border-b border-gray-300 px-6 h-16 shadow-sm">
+      <div className="text-2xl font-bold text-blue-500">
+        <Link to="/chat">Chat App</Link>
+      </div>
+      <div className="flex items-center gap-4">
+        <Link
+          to="/users"
+          className="text-gray-800 font-semibold hover:text-blue-500 transition-colors"
+        >
+          Users
+        </Link>
+        <Link
+          to="/chat"
+          className="text-gray-800 font-semibold hover:text-blue-500 transition-colors"
+        >
+          Chats
+        </Link>
+        <button
+          onClick={handleSubmit}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+        >
+          Logout
+        </button>
+      </div>
+    </header>
   );
 };
 

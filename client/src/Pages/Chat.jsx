@@ -88,9 +88,7 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center justify-between bg-white border-b border-gray-300 px-4 h-16">
-        <Header />
-      </header>
+      <Header />
 
       <div className="flex flex-1 overflow-hidden">
         <aside className="w-72 bg-gray-100 border-r border-gray-300 flex-shrink-0">
