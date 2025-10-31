@@ -39,65 +39,123 @@ export const UserRegistrationForm = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>First Name</label>
-        <input
-          //automatically attached onChange, onBlur, ref
-          {...register('firstName')}
-          type="text"
-          placeholder="Enter your first name here"
-        ></input>
-        <p>{errors.firstName?.message}</p>
-      </div>
-      <div>
-        <label>Last Name</label>
-        <input
-          type="text"
-          placeholder="Enter your last name here"
-          {...register('lastName')}
-        ></input>
-        <p>{errors.lastName?.message}</p>
-      </div>
-      <div>
-        <label>Email</label>
-        <input
-          type="text"
-          placeholder="Enter your email here"
-          {...register('email')}
-        ></input>
-        <p>{errors.email?.message}</p>
-      </div>
-      <div>
-        <label>Password</label>
-        <input
-          type="text"
-          placeholder="Enter your password here"
-          {...register('password')}
-        ></input>
-        <p>{errors.password?.message}</p>
-      </div>
-      <div>
-        <label>Select Role:</label>
-        <div>
-          <label>
-            <input type="radio" value="User" {...register('roles')} />
-            User
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold text-center mb-6 text-blue-500">
+          Sign Up
+        </h2>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium text-gray-700">
+            First Name
           </label>
-          <p>{errors.roles?.message}</p>
+          <input
+            type="text"
+            placeholder="Enter your first name"
+            //automatically attaches onChange, onBlur etc
+            {...register('firstName')}
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.firstName?.message && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.firstName.message}
+            </p>
+          )}
         </div>
-        <div>
-          <label>
-            <input type="radio" value="Admin" {...register('roles')} />
-            Admin
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium text-gray-700">
+            Last Name
           </label>
-          <p>{errors.roles?.message}</p>
+          <input
+            type="text"
+            placeholder="Enter your last name"
+            {...register('lastName')}
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.lastName?.message && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.lastName.message}
+            </p>
+          )}
         </div>
-      </div>
-      <p>
-        Already registered? <Link to="/login">Log In</Link>
-      </p>
-      <button>Submit</button>
-    </form>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium text-gray-700">Email</label>
+          <input
+            type="text"
+            placeholder="Enter your email"
+            {...register('email')}
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.email?.message && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium text-gray-700">
+            Password
+          </label>
+          <input
+            type="password"
+            placeholder="Enter your password"
+            {...register('password')}
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.password?.message && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium text-gray-700">
+            Select Role
+          </label>
+          <div className="flex gap-6 mt-1">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                value="User"
+                {...register('roles')}
+                className="form-radio text-blue-500"
+              />
+              User
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                value="Admin"
+                {...register('roles')}
+                className="form-radio text-blue-500"
+              />
+              Admin
+            </label>
+          </div>
+          {errors.roles?.message && (
+            <p className="text-red-500 text-sm mt-1">{errors.roles.message}</p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors mb-4"
+        >
+          Register
+        </button>
+
+        <p className="text-center text-gray-600">
+          Already registered?{' '}
+          <Link to="/login" className="text-blue-500 hover:underline">
+            Log In
+          </Link>
+        </p>
+      </form>
+    </div>
   );
 };
