@@ -37,30 +37,60 @@ const UserLoginForm = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Email</label>
-        <input
-          type="text"
-          placeholder="Enter your email here"
-          {...register('email')}
-        ></input>
-        <p>{errors.email?.message}</p>
-      </div>
-      <div>
-        <label>Password</label>
-        <input
-          type="text"
-          placeholder="Enter your password here"
-          {...register('password')}
-        ></input>
-        <p>{errors.password?.message}</p>
-      </div>
-      <button>Submit</button>
-      <p>
-        Haven't registered yet? Please <Link to="/">Sign UP</Link>
-      </p>
-    </form>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold text-center mb-6 text-blue-500">
+          Login
+        </h2>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium text-gray-700">Email</label>
+          <input
+            type="text"
+            placeholder="Enter your email"
+            {...register('email')}
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.email?.message && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium text-gray-700">
+            Password
+          </label>
+          <input
+            type="password"
+            placeholder="Enter your password"
+            {...register('password')}
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.password?.message && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors mb-4"
+        >
+          Login
+        </button>
+
+        <p className="text-center text-gray-600">
+          Haven't registered yet?{' '}
+          <Link to="/" className="text-blue-500 hover:underline">
+            Sign Up
+          </Link>
+        </p>
+      </form>
+    </div>
   );
 };
 
