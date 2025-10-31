@@ -13,7 +13,7 @@ let server;
 export const startServer = async (PORT) => {
   try {
     await connectDB();
-    io = initializeSocket(server);
+    io = initializeSocket(httpServer);
     server = httpServer.listen(PORT, () => {
       console.log(`App is listening on PORT ,${PORT}`);
     });
