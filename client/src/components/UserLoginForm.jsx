@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -57,6 +57,9 @@ const UserLoginForm = () => {
         <p>{errors.password?.message}</p>
       </div>
       <button>Submit</button>
+      <p>
+        Haven't registered yet? Please <Link to="/">Sign UP</Link>
+      </p>
     </form>
   );
 };

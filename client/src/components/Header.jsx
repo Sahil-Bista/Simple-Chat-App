@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -6,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Header = () => {
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -24,6 +24,7 @@ const Header = () => {
       }
     }
   };
+
   return (
     <header className="flex items-center justify-between bg-white border-b border-gray-300 px-6 h-16 shadow-sm">
       <div className="text-2xl font-bold text-blue-500">

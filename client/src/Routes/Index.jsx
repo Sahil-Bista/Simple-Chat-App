@@ -9,4 +9,5 @@ export const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   { path: '/users', element: <Users /> },
   { path: '/chat/:userId', element: <Chat /> },
+  { path: '/chat/', element: <Chat /> },
 ]);

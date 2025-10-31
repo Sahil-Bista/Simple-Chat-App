@@ -16,10 +16,20 @@ export const Users = () => {
 
   useEffect(() => {
     if (token) {
-      const decoded = jwtDecode(token);
-      setMyUserId(decoded.UserInfo.user);
+      try {
+        const decoded = jwtDecode(token);
+        setMyUserId(decoded.UserInfo.user);
+      } catch (err) {
+        console.log(err);
+        localStorage.removeItem('accessToken');
+        toast.error('Invalid token. Please login again.', { autoClose: 5000 });
+        navigate('/login');
+      }
+    } else {
+      toast.info('You must be logged in to access users list.', { autoClose: 5000 });
+      navigate('/login');
     }
-  }, [token]);
+  }, [token, navigate]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -45,8 +55,8 @@ export const Users = () => {
         }
       }
     };
-    getUsers();
-  }, []);
+    if (token) getUsers();
+  }, [token]);
 
   return (
     <div>
