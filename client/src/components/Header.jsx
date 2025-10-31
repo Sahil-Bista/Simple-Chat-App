@@ -28,7 +28,7 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between bg-white border-b border-gray-300 px-6 h-16 shadow-sm">
       <div className="text-2xl font-bold text-blue-500">
-        <Link to="/chat">Chat App</Link>
+        <Link to="/users">Chat App</Link>
       </div>
       <div className="flex items-center gap-4">
         <Link

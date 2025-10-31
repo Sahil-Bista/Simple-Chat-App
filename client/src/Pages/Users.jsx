@@ -26,7 +26,9 @@ export const Users = () => {
         navigate('/login');
       }
     } else {
-      toast.info('You must be logged in to access users list.', { autoClose: 5000 });
+      toast.info('You must be logged in to access users list.', {
+        autoClose: 5000,
+      });
       navigate('/login');
     }
   }, [token, navigate]);
@@ -59,38 +61,50 @@ export const Users = () => {
   }, [token]);
 
   return (
-    <div>
+    <div className="flex flex-col h-screen bg-gray-50">
       <Header />
-      <ul>
-        {users.map((user) => (
-          <li key={user._id}>
-            <button
-              onClick={() => {
-                socket.emit(
-                  'join-room',
-                  [myUserId, user._id].sort().join(''),
-                  user._id,
-                  myUserId,
-                  (success) => {
-                    if (success) {
-                      console.log(
-                        `Joined room from users: ${[myUserId, user._id]
-                          .sort()
-                          .join('')}`
-                      );
-                      navigate(`/chat/${user._id}`);
-                    } else {
-                      console.error('Failed to join room');
-                    }
-                  }
-                );
-              }}
-            >
-              {user.firstName}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className="flex-1 overflow-y-auto p-4">
+        {users.length === 0 ? (
+          <p className="text-gray-500 text-center mt-10">No users available.</p>
+        ) : (
+          <ul className="space-y-2">
+            {users.map((user) => (
+              <li key={user._id}>
+                <button
+                  onClick={() => {
+                    socket.emit(
+                      'join-room',
+                      [myUserId, user._id].sort().join(''),
+                      user._id,
+                      myUserId,
+                      (success) => {
+                        if (success) {
+                          console.log(
+                            `Joined room from users: ${[myUserId, user._id]
+                              .sort()
+                              .join('')}`
+                          );
+                          navigate(`/chat/${user._id}`);
+                        } else {
+                          toast.error('Failed to join room');
+                        }
+                      }
+                    );
+                  }}
+                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-200 transition-colors bg-white shadow-sm"
+                >
+                  <div className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    {user.firstName.charAt(0)}
+                  </div>
+                  <span className="font-medium text-gray-800 truncate">
+                    {user.firstName} {user.lastName || ''}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };
