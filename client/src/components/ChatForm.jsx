@@ -17,8 +17,8 @@ const ChatForm = ({ receiverId, senderId, messageHandler }) => {
     const message = data.message;
     socket.emit('sendMessage', senderId, receiverId, message, roomId);
     messageHandler({
-      senderId: senderId,
-      receiverId: receiverId,
+      senderId,
+      receiverId,
       message,
       createdAt: new Date(),
     });
@@ -26,17 +26,24 @@ const ChatForm = ({ receiverId, senderId, messageHandler }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Enter your message here</label>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+      <div className="flex gap-2 items-center">
         <input
           type="text"
-          placeholder="enter your message here"
+          placeholder="Type a message..."
           {...register('message')}
-        ></input>
-        <p>{errors.message?.message}</p>
-        <button>Send</button>
+          className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
+        >
+          Send
+        </button>
       </div>
+      {errors.message?.message && (
+        <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+      )}
     </form>
   );
 };

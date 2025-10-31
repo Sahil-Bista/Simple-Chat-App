@@ -87,18 +87,27 @@ const Chat = () => {
   }, [myUserId, userId]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <Header />
-      <div style={{ flex: 1 }}>
-        <ChatMembers myUserId={myUserId} chatMembers={chatMembers} />
-      </div>
-      <div style={{ flex: 1 }}>
-        <Messages messages={messages} />
-        <ChatForm
-          receiverId={userId}
-          senderId={myUserId}
-          messageHandler={messageHandler}
-        />
+    <div className="flex flex-col h-screen">
+      <header className="flex items-center justify-between bg-white border-b border-gray-300 px-4 h-16">
+        <Header />
+      </header>
+
+      <div className="flex flex-1 overflow-hidden">
+        <aside className="w-72 bg-gray-100 border-r border-gray-300 flex-shrink-0">
+          <ChatMembers myUserId={myUserId} chatMembers={chatMembers} />
+        </aside>
+        <main className="flex-1 flex flex-col bg-gray-50 h-screen">
+          <div className="flex-1 overflow-y-auto p-4">
+            <Messages messages={messages} myUserId={myUserId} />
+          </div>
+          <div className="border-t border-gray-300 p-2">
+            <ChatForm
+              receiverId={userId}
+              senderId={myUserId}
+              messageHandler={messageHandler}
+            />
+          </div>
+        </main>
       </div>
     </div>
   );
